@@ -1,0 +1,47 @@
+<!-- <tr>
+    <th>ID</th>
+    <th>Имя</th>
+    <th>Почта</th>
+    <th>Пол</th>
+    <th>Статус</th>
+    <th>Действие</th>
+</tr>
+</thead>
+<thead>
+</thead>
+<tbody>
+<tr>
+    <td>1</td>
+    <td>Замай</td>
+    <td>zamay@gmail.com</td>
+    <td>Мужчина</td>
+    <td>Активный</td>
+    <td>
+        <a href="/update-user" class="btn border-shadow update">
+            <span class="text-gardient"><i class="fa-solid fa-pen"></i></span>
+        </a>
+        <a href="#" class="btn border-shadow update">
+            <span class="text-gardient"><i class="fa-solid fa-xmark"></i></span>
+        </a>
+    </td>
+</tr> -->
+
+<% for(let i=0; i < users.length; i++) {%>
+
+<tr>
+    <td><%= i+1%></td>
+    <td><%= users[i].name%></td>
+    <td><%= users[i].email%></td>
+    <td><%= users[i].gender%></td>
+    <td><%= users[i].status%></td>
+
+    <td>
+        <a href="/update-user" class="btn border-shadow update">
+            <span class="text-gardient"><i class="fa-solid fa-pen"></i></span>
+        </a>
+        <a href="#" class="btn border-shadow update">
+            <span class="text-gardient"><i class="fa-solid fa-xmark"></i></span>
+        </a>
+    </td>
+</tr>
+<% } %>
