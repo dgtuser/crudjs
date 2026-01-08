@@ -1,0 +1,30 @@
+  <footer class="site-footer">
+    <div class="container footer__grid">
+      <div>
+        <h3>Happy End</h3>
+        <p>Свадебное агентство и студия событий. Работаем в Алматы и по всей стране.</p>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li>Алматы, ул. Примерная 10</li>
+          <li><a href="tel:+77770000000">+7 (777) 000-00-00</a></li>
+          <li><a href="mailto:hello@happyend.kz">hello@happyend.kz</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Социальные сети</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Pinterest</a></li>
+          <li><a href="#">Telegram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">© {{ "now"|date("Y") }} Happy End. Все права защищены.</div>
+  </footer>
+  {% for analytic in analytics %}
+  {{ analytic }}
+  {% endfor %}
+</body>
+</html>

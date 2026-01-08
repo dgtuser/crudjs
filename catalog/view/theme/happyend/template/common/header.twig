@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="{{ base }}" />
+  <title>{{ title }}</title>
+  {% if description %}
+  <meta name="description" content="{{ description }}" />
+  {% endif %}
+  {% if keywords %}
+  <meta name="keywords" content="{{ keywords }}" />
+  {% endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  {% for style in styles %}
+  <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+  {% endfor %}
+  <link href="catalog/view/theme/happyend/stylesheet/stylesheet.css" rel="stylesheet" />
+  {% for script in scripts %}
+  <script src="{{ script }}" type="text/javascript"></script>
+  {% endfor %}
+</head>
+<body class="{{ class }} theme-happyend">
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar__left">
+        <span>Свадебное агентство полного цикла</span>
+      </div>
+      <div class="topbar__right">
+        <a href="tel:+77770000000">+7 (777) 000-00-00</a>
+        <a href="mailto:hello@happyend.kz">hello@happyend.kz</a>
+      </div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container header__row">
+      <div class="logo">
+        {% if logo %}
+        <a href="{{ home }}"><img src="{{ logo }}" alt="{{ name }}" /></a>
+        {% else %}
+        <a class="logo__text" href="{{ home }}">Happy End</a>
+        {% endif %}
+      </div>
+      <nav class="primary-nav">
+        <a href="#about">О нас</a>
+        <a href="#services">Услуги</a>
+        <a href="#portfolio">Портфолио</a>
+        <a href="#packages">Пакеты</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <div class="header__cta">
+        <a class="btn btn--ghost" href="#contact">Обсудить событие</a>
+      </div>
+    </div>
+  </header>
