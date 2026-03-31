@@ -1,27 +1,26 @@
-<form action="../api/users" method="POST" id="add-user">
-    <div class="new_user">
-        <div class="form-group">
-            <label for="name" class="text-light">Name</label>
-            <input type="hidden" name="id" value="">
-            <input type="text" name="name" value="" placeholder="Jhon">
-        </div>
-        <div class="form-group">
-            <label for="Email" class="text-light">Email</label>
-            <input type="text" name="email" value="" placeholder="exzample@gmail.com">
-        </div>
-        <div class="form-group">
-            <label for="gender" class="text-light">Пол</label>
-            <div class="radio">
-                <input type="radio" name="gender" value="мужчина">
-                <label for="gender" class="text-light">мужчина</label>
-            </div>
-            <div class="radio">
-                <input type="radio" name="gender" value="женщина">
-                <label for="gender" class="text-light">женщина</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="bnt text-dark">Добавить</button>
-        </div>
-    </div> 
+<form action="<%= record ? `/ips/${record._id}/update` : '/ips' %>" method="POST" class="ip-form">
+  <div class="grid">
+    <label>IP адрес* <input type="text" name="ip" required value="<%= record?.ip || '' %>" placeholder="10.1.0.1"></label>
+    <label>Имя* <input type="text" name="name" required value="<%= record?.name || '' %>" placeholder="almex01"></label>
+    <label>Назначение* <input type="text" name="purpose" required value="<%= record?.purpose || '' %>" placeholder="Доменный контроллер"></label>
+    <label>Группа <input type="text" name="group" value="<%= record?.group || '' %>" placeholder="Серверы"></label>
+    <label>Статус
+      <select name="status">
+        <% ['Активный', 'Резерв', 'Отключен'].forEach((item) => { %>
+          <option value="<%= item %>" <%= (record?.status || 'Активный') === item ? 'selected' : '' %>><%= item %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>DNS / Hostname <input type="text" name="hostname" value="<%= record?.hostname || '' %>" placeholder="dc01.local"></label>
+    <label>Локация <input type="text" name="location" value="<%= record?.location || '' %>" placeholder="Алматы, ДЦ-1"></label>
+    <label>Ответственный <input type="text" name="owner" value="<%= record?.owner || '' %>" placeholder="IT-Отдел"></label>
+    <label>VLAN <input type="text" name="vlan" value="<%= record?.vlan || '' %>" placeholder="120"></label>
+    <label>Подсеть <input type="text" name="subnet" value="<%= record?.subnet || '' %>" placeholder="10.1.0.0/24"></label>
+    <label>Последняя проверка <input type="date" name="lastSeen" value="<%= record?.lastSeen ? new Date(record.lastSeen).toISOString().slice(0,10) : '' %>"></label>
+    <label class="full">Примечание <textarea name="notes" rows="3" placeholder="Дополнительные данные"><%= record?.notes || '' %></textarea></label>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary" type="submit"><%= record ? 'Сохранить изменения' : 'Добавить IP' %></button>
+    <a href="/" class="btn btn-secondary">Отмена</a>
+  </div>
 </form>
