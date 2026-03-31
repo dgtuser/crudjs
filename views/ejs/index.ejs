@@ -1,31 +1,104 @@
 <%- include('include/_header.ejs') %>
-    <main class="site-main">
-        <div class="container">
-            <header class="header">
-                <nav class="nav">
-                    <div class="container">
-                        <div class="text-center">
-                            <a href="/" class="nav-brand text-dark">Управление пользователями</a>
-                        </div>
-                    </div>
-                </nav>
-            </header>
-        
-        </body>
-        </html>
-            <div class="box-nav d-flex-justify-between">
-                <a href="/add-user" class="border-shadow">
-                    <span class="text-gardient"><i class="fa-regular fa-user"></i>Добавить пользователя</span>
-                    
-                </a>
-            </div>
-            <form action="/" method="POST">
-                <table class="table">
-                    <tbody>
-                        <%- include('include/_show.ejs') %>                    </tbody>
-                </table>
-            </form>
+
+<main class="layout">
+  <aside class="sidebar">
+    <h2>IPAM</h2>
+    <p>Инвентаризация адресов</p>
+    <a href="/add-ip" class="btn btn-primary full-btn"><i class="fa-solid fa-plus"></i> Добавить IP</a>
+
+    <div class="import-box">
+      <h3>Импорт CSV</h3>
+      <p class="hint">Колонки: ip,name,purpose,group,status,hostname,location,owner,vlan,subnet,notes,lastSeen</p>
+      <form action="/ips/import" method="POST" id="csv-import-form">
+        <input type="file" id="csvFile" accept=".csv" required>
+        <textarea name="csvContent" id="csvContent" hidden required></textarea>
+        <button class="btn btn-secondary full-btn" type="submit">Загрузить файл</button>
+      </form>
+    </div>
+
+    <div class="stats">
+      <div><span>Всего</span><strong><%= stats.total %></strong></div>
+      <div><span>Активные</span><strong><%= stats.active %></strong></div>
+      <div><span>Резерв</span><strong><%= stats.reserve %></strong></div>
+      <div><span>Отключены</span><strong><%= stats.disabled %></strong></div>
+    </div>
+  </aside>
+
+  <section class="content">
+    <form class="toolbar" method="GET" action="/">
+      <input type="text" name="q" placeholder="Быстрый поиск по IP, имени, назначению..." value="<%= query.q %>">
+      <select name="group">
+        <option value="">Все группы</option>
+        <% groups.forEach((group) => { %>
+          <option value="<%= group %>" <%= query.group === group ? 'selected' : '' %>><%= group %></option>
+        <% }) %>
+      </select>
+      <select name="status">
+        <option value="">Любой статус</option>
+        <% ['Активный', 'Резерв', 'Отключен'].forEach((status) => { %>
+          <option value="<%= status %>" <%= query.status === status ? 'selected' : '' %>><%= status %></option>
+        <% }) %>
+      </select>
+      <button class="btn btn-primary" type="submit">Фильтр</button>
+      <a href="/" class="btn btn-secondary">Сброс</a>
+    </form>
+
+    <% if (Object.keys(groupedRecords).length === 0) { %>
+      <div class="empty">Записей пока нет. Добавьте адрес вручную или через CSV.</div>
+    <% } %>
+
+    <% Object.keys(groupedRecords).forEach((groupName) => { %>
+      <div class="table-card">
+        <div class="table-header">
+          <h3><%= groupName %></h3>
+          <span><%= groupedRecords[groupName].length %> записей</span>
         </div>
-    </main>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>IP</th>
+                <th>Имя</th>
+                <th>Назначение</th>
+                <th>Статус</th>
+                <th>DNS</th>
+                <th>Локация</th>
+                <th>Ответственный</th>
+                <th>VLAN</th>
+                <th>Подсеть</th>
+                <th>Последняя проверка</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% groupedRecords[groupName].forEach((item) => { %>
+                <tr>
+                  <td class="mono"><%= item.ip %></td>
+                  <td><%= item.name %></td>
+                  <td><%= item.purpose %></td>
+                  <td><span class="badge <%= item.status === 'Активный' ? 'green' : item.status === 'Резерв' ? 'yellow' : 'red' %>"><%= item.status %></span></td>
+                  <td><%= item.hostname || '—' %></td>
+                  <td><%= item.location || '—' %></td>
+                  <td><%= item.owner || '—' %></td>
+                  <td><%= item.vlan || '—' %></td>
+                  <td><%= item.subnet || '—' %></td>
+                  <td><%= item.lastSeen ? new Date(item.lastSeen).toLocaleDateString('ru-RU') : '—' %></td>
+                  <td>
+                    <div class="row-actions">
+                      <a class="icon-btn" href="/edit-ip/<%= item._id %>"><i class="fa-solid fa-pen"></i></a>
+                      <form action="/ips/<%= item._id %>/delete" method="POST" onsubmit="return confirm('Удалить запись?')">
+                        <button class="icon-btn danger" type="submit"><i class="fa-solid fa-trash"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% }) %>
+  </section>
+</main>
 
 <%- include('include/_footer.ejs') %>
